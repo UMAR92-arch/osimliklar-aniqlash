@@ -5,14 +5,15 @@ let aiInstance: GoogleGenAI | null = null;
 
 const getAI = () => {
   if (!aiInstance) {
-    // Vite-da API kalitni olishning eng xavfsiz yo'li
+    // Vite va turli muhitlar uchun eng chidamli usul
     const apiKey = 
+      import.meta.env.VITE_GEMINI_API_KEY || 
       (import.meta as any).env?.VITE_GEMINI_API_KEY || 
       (process as any).env?.GEMINI_API_KEY ||
       (process as any).env?.VITE_GEMINI_API_KEY;
     
     if (!apiKey) {
-      throw new Error("Gemini API key topilmadi. .env faylini tekshiring.");
+      throw new Error("Gemini API key topilmadi. .env faylini yoki Vercel sozlamalarini tekshiring.");
     }
     aiInstance = new GoogleGenAI({ apiKey });
   }
@@ -82,7 +83,7 @@ export const identifyPlantByImage = async (base64Image: string): Promise<PlantIn
   };
 
   const response = await ai.models.generateContent({
-    model: "gemini-3-flash-preview",
+    model: "gemini-2.0-flash",
     contents: [{ role: 'user', parts: [imagePart, promptPart] }],
     config: {
       responseMimeType: "application/json",
@@ -108,7 +109,7 @@ export const identifyPlantByText = async (input: string): Promise<PlantInfo> => 
   };
 
   const response = await ai.models.generateContent({
-    model: "gemini-3-flash-preview",
+    model: "gemini-2.0-flash",
     contents: [{ role: 'user', parts: [promptPart] }],
     config: {
       responseMimeType: "application/json",
@@ -126,7 +127,7 @@ export const identifyPlantByText = async (input: string): Promise<PlantInfo> => 
 export const getDetailedCareGuide = async (plantName: string): Promise<string> => {
   const ai = getAI();
   const response = await ai.models.generateContent({
-    model: "gemini-3-flash-preview",
+    model: "gemini-2.0-flash",
     contents: [{ role: 'user', parts: [{ text: `Botanik mutaxassis sifatida "${plantName}" o'simligini muvaffaqiyatli o'stirish sirlarini ayting. 
     Oddiy qishloq xalqi tushunadigan tilda, eng muhim va hal qiluvchi amallarni yozing. 
     Masalan: qachon og'it berish kerak, qaysi paytda suv quyish o'ldiradi, qanday qilib hosilni ko'paytirish mumkin. 
