@@ -78,7 +78,7 @@ export const identifyPlantByImage = async (base64Image: string): Promise<PlantIn
   };
 
   const response = await ai.models.generateContent({
-    model: "gemini-1.5-flash",
+    model: "gemini-2.5-flash",
     contents: [{ role: 'user', parts: [imagePart, promptPart] }],
     config: {
       responseMimeType: "application/json",
@@ -104,7 +104,7 @@ export const identifyPlantByText = async (input: string): Promise<PlantInfo> => 
   };
 
   const response = await ai.models.generateContent({
-    model: "gemini-1.5-flash",
+    model: "gemini-2.5-flash",
     contents: [{ role: 'user', parts: [promptPart] }],
     config: {
       responseMimeType: "application/json",
@@ -122,7 +122,7 @@ export const identifyPlantByText = async (input: string): Promise<PlantInfo> => 
 export const getDetailedCareGuide = async (plantName: string): Promise<string> => {
   const ai = getAI();
   const response = await ai.models.generateContent({
-    model: "gemini-1.5-flash",
+    model: "gemini-2.5-flash",
     contents: [{ role: 'user', parts: [{ text: `Botanik mutaxassis sifatida "${plantName}" o'simligini muvaffaqiyatli o'stirish sirlarini ayting. 
     Oddiy qishloq xalqi tushunadigan tilda, eng muhim va hal qiluvchi amallarni yozing. 
     Masalan: qachon og'it berish kerak, qaysi paytda suv quyish o'ldiradi, qanday qilib hosilni ko'paytirish mumkin. 
