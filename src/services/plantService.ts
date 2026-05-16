@@ -5,13 +5,10 @@ let aiInstance: GoogleGenAI | null = null;
 
 const getAI = () => {
   if (!aiInstance) {
-    const apiKey = 
-      (process as any).env?.VITE_GEMINI_API_KEY || 
-      (process as any).env?.GEMINI_API_KEY ||
-      import.meta.env.VITE_GEMINI_API_KEY;
+    const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
     
     if (!apiKey) {
-      throw new Error("Gemini API key topilmadi. Vercel Settings > Environment Variables qismiga VITE_GEMINI_API_KEY qo'shilganligini va qayta deploy qilinganligini tekshiring.");
+      throw new Error("Gemini API key topilmadi. Vercel Settings > Environment Variables qismiga 'VITE_GEMINI_API_KEY' qo'shilganligini va loyiha qayta deploy qilinganligini tekshiring.");
     }
     aiInstance = new GoogleGenAI({ apiKey });
   }
